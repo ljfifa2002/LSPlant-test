@@ -26,6 +26,11 @@ jobs:
       - name: Grant execute permission
         run: chmod +x LSPlant-6.4/gradlew
 
+      - name: Accept Android SDK licenses and install NDK
+        run: |
+          yes | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --licenses
+          ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager "ndk;27.0.11718014"
+
       - name: Build lsplant standalone AAR
         working-directory: LSPlant-6.4
         run: ./gradlew :lsplant:assembleStandalone
