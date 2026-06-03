@@ -39,6 +39,16 @@ jobs:
           yes | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --licenses
           ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager "ndk;27.0.11718014"
 
+      - name: Upgrade ninja bundled with Android SDK cmake to v1.11
+        run: |
+          # Android SDK cmake 3.31.5 bundles Ninja 1.10.x which lacks C++20 module
+          # support. Replace it with 1.11.1 in-place so Gradle picks up the new version.
+          NINJA_VER=1.11.1
+          wget -qO /tmp/ninja-linux.zip \
+            https://github.com/ninja-build/ninja/releases/download/v${NINJA_VER}/ninja-linux.zip
+          sudo unzip -o /tmp/ninja-linux.zip -d ${ANDROID_SDK_ROOT}/cmake/3.31.5/bin/
+          ${ANDROID_SDK_ROOT}/cmake/3.31.5/bin/ninja --version
+
       - name: Build lsplant standalone AAR
         working-directory: LSPlant-6.4
         run: ./gradlew :lsplant:assembleStandalone
