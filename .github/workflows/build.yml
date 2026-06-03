@@ -26,6 +26,12 @@ jobs:
             LSPlant-6.4/lsplant/src/main/jni/external/dex_builder
           echo "DexBuilder: $(ls LSPlant-6.4/lsplant/src/main/jni/external/dex_builder/)"
           echo "parallel_hashmap: $(ls LSPlant-6.4/lsplant/src/main/jni/external/dex_builder/external/parallel_hashmap/ | head -3)"
+          # GitHub Actions runner has Ninja 1.10.x which does not support C++20 module
+          # scanning required by dex_builder_static. Disable scanning at CMake level.
+          DEX_CMAKE=LSPlant-6.4/lsplant/src/main/jni/external/dex_builder/CMakeLists.txt
+          sed -i '1s/^/set(CMAKE_CXX_SCAN_FOR_MODULES OFF)\n/' "$DEX_CMAKE"
+          echo "Patched CMakeLists.txt:"
+          head -3 "$DEX_CMAKE"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
