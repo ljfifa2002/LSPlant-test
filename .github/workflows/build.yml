@@ -16,8 +16,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
+
+      - name: Clone DexBuilder dependency
+        run: git clone --depth 1 https://github.com/LSPosed/DexBuilder.git \
+          LSPlant-6.4/lsplant/src/main/jni/external/dex_builder
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
