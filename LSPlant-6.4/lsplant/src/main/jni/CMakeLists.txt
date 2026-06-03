@@ -18,6 +18,9 @@ add_definitions(-std=c++20)
 set(SOURCES lsplant.cc)
 
 set(DEX_BUILDER_BUILD_SHARED OFF CACHE INTERNAL "" FORCE)
+# Disable C++20 module scanning: DexBuilder triggers this check but Ninja < 1.11
+# (the version bundled with Android SDK cmake) does not support it.
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 add_subdirectory(external/dex_builder)
 
 option(LSPLANT_BUILD_SHARED "If ON, lsplant will also build shared library" ON)
