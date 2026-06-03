@@ -19,10 +19,12 @@ jobs:
 
       - name: Clone DexBuilder dependency
         run: |
-          git clone --depth 1 --recurse-submodules --shallow-submodules \
+          # Remove empty submodule placeholder (committed as gitlink in original repo)
+          rm -rf LSPlant-6.4/lsplant/src/main/jni/external/dex_builder
+          git clone --depth 1 --recurse-submodules \
             https://github.com/LSPosed/DexBuilder.git \
             LSPlant-6.4/lsplant/src/main/jni/external/dex_builder
-          echo "DexBuilder cloned: $(ls LSPlant-6.4/lsplant/src/main/jni/external/dex_builder/)"
+          echo "DexBuilder: $(ls LSPlant-6.4/lsplant/src/main/jni/external/dex_builder/)"
           echo "parallel_hashmap: $(ls LSPlant-6.4/lsplant/src/main/jni/external/dex_builder/external/parallel_hashmap/ | head -3)"
 
       - name: Set up JDK 17
